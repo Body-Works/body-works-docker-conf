@@ -1,0 +1,36 @@
+version: '3'
+services:
+  php-apache-environment:
+    container_name: bodyworks-apache
+    restart: "no"
+    build:
+      context: ./apache
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - ./apache/www:/var/www/html/
+    ports:
+      - 8000:80
+      - 443:443
+  db:
+    container_name: bodyworks-db
+    image: mariadb:10.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./db/init:/docker-entrypoint-initdb.d
+    ports:
+      - "9906:3306"
+  phpmyadmin:
+    container_name: bodyworks-phpmyadmin
+    image: phpmyadmin
+    restart: "no"
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+      - UPLOAD_LIMIT=300M
+      - MEMORY_LIMIT=1024M
