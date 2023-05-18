@@ -1,1 +1,4 @@
 db/data/
+apache/www/shop.body-works.pl/
+apache/www/body-works.pl/
+!apache/www/*/index.php
